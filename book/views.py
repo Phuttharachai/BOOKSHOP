@@ -15,9 +15,9 @@ class TypeViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def retrieve(self, request, *args, **kwargs):
-        type = Type.objects.get(pk=kwargs['pk'])
-        serializer = CustomerSerializer(type)
+    def retrieve(self, request, *args, **kwarg):
+        type = Book.objects.filter(type_id=kwarg['pk'])
+        serializer = BookSerializer(type, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -32,9 +32,9 @@ class WriterViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def retrieve(self, request, *args, **kwargs):
-        writer = Writer.objects.get(pk=kwargs['pk'])
-        serializer = WriterSerializer(writer)
+    def retrieve(self, request, *args, **kwarg):
+        writer = Book.objects.filter(writer_id=kwarg['pk'])
+        serializer = BookSerializer(writer, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -68,7 +68,7 @@ class OrderViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
 
     def retrieve(self, request, *args, **kwargs):
         order = Order.objects.get(pk=kwargs['pk'])
-        serializer = CustomerSerializer(order)
+        serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -84,6 +84,6 @@ class BookViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, *args, **kwargs):
-        book = Book.objects.get(pk=kwargs['pk'])
-        serializer = CustomerSerializer(book)
+        book = Book.objects.filter(pk=kwargs['pk'])
+        serializer = BookSerializer(book, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -23,13 +23,8 @@ class Customer(models.Model):
     city = models.CharField("City", max_length=1024)
     country = models.CharField("Country", max_length=100)
     phone = models.CharField(max_length=14)
-    address = models.CharField(max_length=100)
+    mailaddress = models.CharField(max_length=100)
     birthdate = models.DateField()
-
-
-class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
-    date = models.DateField()
 
 
 class Book(models.Model):
@@ -39,7 +34,12 @@ class Book(models.Model):
     name = models.CharField(max_length=200)
     writer = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     type = models.ForeignKey(Type, on_delete=models.SET_NULL, null=True)
-    currency = models.CharField(max_length=5, choices=currencies, default="฿")
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    order = models.ForeignKey(Order, null=True, related_name='book', on_delete=models.SET_NULL, blank=True)
+    currency = models.CharField(max_length=5, choices=currencies, default="฿")
     description = models.TextField()
+
+
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+    date = models.DateField()
